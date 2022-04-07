@@ -1,0 +1,18 @@
+
+<div class="top">
+</div>
+
+<div>
+<table class='todo-table'>
+<% @todos.each do |todo| %>
+  <tr>
+    <td>
+      <%= todo.user_id %>
+    </td>
+    <td>
+      <%= todo.title %>
+    </td>
+  </tr>
+<% end %>
+</table>
+</div>

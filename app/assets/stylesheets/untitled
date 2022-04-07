@@ -1,0 +1,5 @@
+
+"select count(), user_id from todos where completed is true group by user_id"
+
+
+qry = "select count(), a.user_id, (cast((select count() from todos as b where completed is true and a.user_id = b.user_id) as real) / cast((select count(*) from todos as c where a.user_id = c.user_id) as real)) * 100 as precent from todos as a group by user_id"
