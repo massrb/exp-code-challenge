@@ -10,11 +10,18 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_04_07_002504) do
+ActiveRecord::Schema[7.0].define(version: 2022_04_07_182812) do
   create_table "todos", force: :cascade do |t|
-    t.integer "user_id"
+    t.integer "user_number"
     t.string "title"
     t.boolean "completed"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "users", force: :cascade do |t|
+    t.float "percent_complete"
+    t.integer "number"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

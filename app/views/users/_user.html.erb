@@ -1,0 +1,19 @@
+<div class="user-seperator all-users <%=class_for(user)%>">
+  <div>
+    <%= "user #{user.number}: #{user.percent_complete}%" %>
+  </div>
+  <table class='todo-table'>
+    <th> Title </th>
+    <th> Completed </th>
+    <% user.todos.order(:completed).each do |todo| %>
+      <tr>
+        <td>
+          <%= todo.title %>
+        </td>
+        <td>
+          <%= todo.completed %>
+        </td>
+      </tr>
+    <% end %>
+  </table>
+</div>

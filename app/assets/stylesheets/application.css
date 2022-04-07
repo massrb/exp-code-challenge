@@ -3,6 +3,14 @@
   margin: 30px;
 }
 
+.container {
+  margin-left: 30px;
+}
+
 .todo-table {
-  margin-left: 50px;
+  margin-left: 20px;
+}
+
+.user-seperator {
+  margin-top: 20px;
 }

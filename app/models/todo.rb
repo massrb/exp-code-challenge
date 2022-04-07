@@ -3,27 +3,57 @@ require 'net/http'
 class Todo < ApplicationRecord
   JsonUrl = "https://jsonplaceholder.typicode.com/todos"
 
+  belongs_to :user, primary_key: :number, foreign_key: :user_number, optional: true
+  after_commit :create_user, unless: :user_exists?
+
   def self.percentages
     query = %Q(
-      select 
-        a.user_id, 
-        (cast((select count() from todos as b 
-          where completed is true and a.user_id = b.user_id) as real) 
-          / 
-         cast((select count(*) from todos as c 
-           where a.user_id = c.user_id) as real)) 
-      * 100 as precent 
-      from todos as a group by user_id
+      SELECT 
+        a.user_number, 
+        (CAST((SELECT COUNT() FROM todos AS b 
+          WHERE completed IS true AND a.user_number = b.user_number) AS real) 
+         / 
+         CAST((SELECT COUNT(*) FROM todos AS c 
+           WHERE a.user_number = c.user_number) AS real)) 
+      * 100 AS percent 
+      FROM todos AS a GROUP BY user_number
       )
       ActiveRecord::Base.connection.execute(query)
   end
 
   def self.load_json
-   resp = Net::HTTP.get_response(URI.parse(JsonUrl))
-   data = resp.body
-   result = JSON.parse(data)
-   result.each do |rec|
-     Todo.create!(rec.transform_keys { |key| key.to_s.underscore })
-   end
+    resp = Net::HTTP.get_response(URI.parse(JsonUrl))
+    data = resp.body
+    result = JSON.parse(data)
+    mappings = { user_id: :user_number }
+    result.each do |rec|
+      puts rec.inspect
+      fields = rec.transform_keys { |key| key.to_s.underscore }
+      fields["user_number"] = fields["user_id"]
+      fields.delete("user_id")
+      puts fields.inspect
+      todo = Todo.create(fields)
+    end
+    percents = percentages
+    percents.each do |perc|
+      puts "PERC:" + perc.inspect
+      user = User.find_by(number: perc["user_number"])
+      puts user.inspect
+      if user
+        user.percent_complete = perc["percent"].round(3)
+        user.save!
+      end
+    end
   end
+
+  private
+
+  def create_user
+    User.create!(number: self.user_number)
+  end
+
+  def user_exists?
+    self.user.present?
+  end
+
 end
