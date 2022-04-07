@@ -25,20 +25,15 @@ class Todo < ApplicationRecord
     resp = Net::HTTP.get_response(URI.parse(JsonUrl))
     data = resp.body
     result = JSON.parse(data)
-    mappings = { user_id: :user_number }
     result.each do |rec|
-      puts rec.inspect
       fields = rec.transform_keys { |key| key.to_s.underscore }
       fields["user_number"] = fields["user_id"]
       fields.delete("user_id")
-      puts fields.inspect
       todo = Todo.create(fields)
     end
     percents = percentages
     percents.each do |perc|
-      puts "PERC:" + perc.inspect
       user = User.find_by(number: perc["user_number"])
-      puts user.inspect
       if user
         user.percent_complete = perc["percent"].round(3)
         user.save!

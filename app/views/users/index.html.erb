@@ -4,9 +4,9 @@
 
 <div class="container">
   <select name="rendering-select" id="percent_select">
+    <option value="all-users">All</option>
     <option value="at-least-50">At least 50%</option>
     <option value="less-than-50">Less than %50</option>
-    <option value="all-users">All</option>
   </select>
 
   <% @users.each do |user| %>
@@ -15,37 +15,35 @@
 </div>
 
 
-  <script>
-    function set_style(arr, style) {
-      for (let i = 0; i < arr.length; i++) {
-        console.log(i, style);
-        if (style == "none") {
-         arr[i].style.display = style;
-        }
-        else {
-          arr[i].style.display = "";
-          arr[i].style.visibility = style;
-        }
+<script>
+  function set_style(arr, style) {
+    for (let i = 0; i < arr.length; i++) {
+      console.log(i, style);
+      if (style == "none") {
+       arr[i].style.display = style;
+      }
+      else {
+        arr[i].style.display = "";
+        arr[i].style.visibility = style;
       }
     }
+  }
 
-    function select_change() {
-      let sel = document.getElementById("percent_select");
-      let val = sel.value;
-      let off_val = null;
-      if (val == "at-least-50") {
-        off_val = "less-than-50"
-      } else if (val == "less-than-50") {
-        off_val = "at-least-50"
-      } 
-      console.log("changed", val);
-      // set_style(document.getElementsByClassName('all-users'), "hidden")
-      set_style(document.getElementsByClassName(val), 'visible')
-      if (off_val) {
-        set_style(document.getElementsByClassName(off_val), 'none')
-      }
+  function select_change() {
+    let sel = document.getElementById("percent_select");
+    let val = sel.value;
+    let off_val = null;
+    if (val == "at-least-50") {
+      off_val = "less-than-50"
+    } else if (val == "less-than-50") {
+      off_val = "at-least-50"
+    } 
+    set_style(document.getElementsByClassName(val), 'visible')
+    if (off_val) {
+      set_style(document.getElementsByClassName(off_val), 'none')
     }
+  }
 
-    document.getElementById("percent_select").onchange = select_change;
-  </script>
+  document.getElementById("percent_select").onchange = select_change;
+</script>
 

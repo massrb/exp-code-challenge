@@ -11,6 +11,12 @@
   margin-left: 20px;
 }
 
-.user-seperator {
+.user-separator {
   margin-top: 20px;
+}
+
+.line-separator {
+  height:1px;
+  border-top:1px 
+  solid black; 
 }
