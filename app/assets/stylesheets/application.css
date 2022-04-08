@@ -7,6 +7,20 @@
   margin-left: 30px;
 }
 
+.header-row {
+  height: 45px;
+}
+
+.line-separator {
+  height:1px;
+  border-top:1px 
+  solid black; 
+}
+
+table {
+  width: 60%;
+}
+
 .todo-table {
   margin-left: 20px;
 }
@@ -15,8 +29,5 @@
   margin-top: 20px;
 }
 
-.line-separator {
-  height:1px;
-  border-top:1px 
-  solid black; 
-}
+
+
