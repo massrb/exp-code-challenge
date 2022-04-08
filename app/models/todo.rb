@@ -22,10 +22,7 @@ class Todo < ApplicationRecord
   end
 
   def self.load_json
-    resp = Net::HTTP.get_response(URI.parse(JsonUrl))
-    data = resp.body
-    result = JSON.parse(data)
-    result.each do |rec|
+    get_json.each do |rec|
       fields = rec.transform_keys { |key| key.to_s.underscore }
       fields["user_number"] = fields["user_id"]
       fields.delete("user_id")
@@ -42,6 +39,12 @@ class Todo < ApplicationRecord
   end
 
   private
+
+  def self.get_json
+    resp = Net::HTTP.get_response(URI.parse(JsonUrl))
+    data = resp.body
+    result = JSON.parse(data)    
+  end
 
   def create_user
     User.create!(number: self.user_number)
