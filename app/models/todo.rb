@@ -28,8 +28,7 @@ class Todo < ApplicationRecord
       fields.delete("user_id")
       todo = Todo.create(fields)
     end
-    percents = percentages
-    percents.each do |perc|
+    percentages.each do |perc|
       user = User.find_by(number: perc["user_number"])
       if user
         user.percent_complete = perc["percent"].round(3)
